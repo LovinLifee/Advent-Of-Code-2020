@@ -1,14 +1,16 @@
 package net.avuna.aoc.days;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import net.avuna.aoc.Challenge;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Day3 extends Challenge<Long> {
 
     private static final char TREE = '#';
+
+    private final Map map = new Map(readAsMatrix());
 
     public Day3() {
         super(3);
@@ -16,25 +18,11 @@ public class Day3 extends Challenge<Long> {
 
     @Override
     public Long doPartOne() {
-        Map map = createMap();
         return countTreesOnSlope(map, 3, 1);
-    }
-
-    private Map createMap() {
-        List<String> input = readLines().collect(Collectors.toList());
-        char[][] matrix = new char[input.get(0).length()][input.size()];
-        for (int x = 0; x < input.size(); x++) {
-            for (int y = 0; y < input.get(x).length(); y++) {
-                matrix[y][x] = input.get(x).charAt(y);
-            }
-        }
-        Map map = new Map(matrix);
-        return map;
     }
 
     @Override
     public Long doPartTwo() {
-        Map map = createMap();
         long treesOnSlopeA = countTreesOnSlope(map, 1, 1);
         long treesOnSlopeB = countTreesOnSlope(map, 3, 1);
         long treesOnSlopeC = countTreesOnSlope(map, 5, 1);

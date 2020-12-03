@@ -4,9 +4,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.avuna.aoc.Challenge;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Day2 extends Challenge<Long> {
+
+    private final List<Data> data = parseData().collect(Collectors.toList());
 
     public Day2() {
         super(2);
@@ -14,12 +18,12 @@ public class Day2 extends Challenge<Long> {
 
     @Override
     public Long doPartOne() {
-        return parseData().filter(this::isValidPart1).count();
+        return data.stream().filter(this::isValidPart1).count();
     }
 
     @Override
     public Long doPartTwo() {
-        return parseData().filter(this::isValidPart2).count();
+        return data.stream().filter(this::isValidPart2).count();
     }
 
     private boolean isValidPart1(Data data) {
