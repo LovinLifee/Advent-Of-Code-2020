@@ -13,6 +13,7 @@ public class AdventCalender {
         DAYS.add(new Day1());
         DAYS.add(new Day2());
         DAYS.add(new Day3());
+        DAYS.add(new Day4());
     }
 
     private static void runDay(Challenge<?> challenge) {
