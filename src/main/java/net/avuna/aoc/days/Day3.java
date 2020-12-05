@@ -73,7 +73,7 @@ public class Day3 extends Challenge<Long> {
     @Setter
     @AllArgsConstructor
     @ToString
-    private static final class Position {
+    private final class Position {
 
         private int x;
         private int y;

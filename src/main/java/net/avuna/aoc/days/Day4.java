@@ -64,7 +64,7 @@ public class Day4 extends Challenge<Long> {
     }
 
     @ToString
-    private static final class Passport {
+    private final class Passport {
         public String birthYear = null;
         public String issueYear = null;
         public String expirationYear = null;
