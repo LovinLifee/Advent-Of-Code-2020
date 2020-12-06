@@ -3,6 +3,6 @@ package net.avuna.aoc;
 public class Main {
 
     public static void main(String[] args) {
-	    AdventCalender.runDay(5);
+	    AdventCalender.runDay(6);
     }
 }

@@ -35,6 +35,11 @@ public class Day4 extends Challenge<Long> {
             "pid", "passportId",
             "cid", "countryId");
 
+    /*
+        Reflection is totally unnecessary, also parsing of the passports can be done way better.
+        There's currently a bug where it doesn't read the last passport since there is no terminating '\n' at the end of the file
+        To circumvent this I've just pushed the last passport after the loop has finished.
+     */
     private List<Passport> parsePassports() {
         List<Passport> passports = new ArrayList<>();
         Passport passport = new Passport();

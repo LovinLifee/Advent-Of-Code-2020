@@ -57,6 +57,12 @@ public class Day5 extends Challenge<Integer> {
         return Math.round(Math.min(min, max));
     }
 
+    /*
+        Checking where our seat is located can be done in O(n) as apposed to O(n^2)
+        Since the numbers in the list are sequential, we can check for the first occurrence
+        where the current number and the previous number have a difference of 2
+        I'm just lazy and this is much prettier.
+     */
     @Override
     public Integer doPartTwo() {
         List<Integer> seatIds = seats.stream().map(Seat::getId).sorted().collect(Collectors.toList());
