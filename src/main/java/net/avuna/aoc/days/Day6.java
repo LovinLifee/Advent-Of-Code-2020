@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
     Also note: I've prematurely given up on the bug where you don't read the last group,
     so to circumvent this just add a few newlines to the bottom of your text document
  */
-public class Day6 extends Challenge<Object> {
+public class Day6 extends Challenge<Integer> {
 
     private final List<String> lines = readLines().collect(Collectors.toList());
 
@@ -26,7 +26,7 @@ public class Day6 extends Challenge<Object> {
     }
 
     @Override
-    public Object doPartOne() {
+    public Integer doPartOne() {
         Set<Character> characters = new HashSet<>();
         int sum = 0;
         for(int i = 0; i < lines.size(); i++) {
@@ -45,7 +45,7 @@ public class Day6 extends Challenge<Object> {
     }
 
     @Override
-    public Object doPartTwo() {
+    public Integer doPartTwo() {
         int sum = 0;
         int groupSize = 0;
         FrequencyMap<Character> occurrences = new FrequencyMap<>();
