@@ -7,25 +7,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Day7 extends Challenge<Integer> {
+public class Day7 extends Challenge<Object> {
 
     private final Map<String, Bag> bags = parseBags();
 
     @Override
-    public Integer doPartOne() {
-        int count = 0;
-        for(Bag bag : bags.values()) {
-            if (leadsToGoldBag(bag)) {
-                count++;
-            }
-        }
-        return count;
+    public Object doPartOne() {
+        return bags.values().stream().filter(this::leadsToGoldBag).count();
     }
 
     @Override
-    public Integer doPartTwo() {
-        Bag b = bags.get("shiny gold");
-        return countChildrenBags(b) - 1;
+    public Object doPartTwo() {
+        return countChildrenBags(bags.get("shiny gold")) - 1;
     }
 
     private Map<String, Bag> parseBags() {
@@ -39,8 +32,7 @@ public class Day7 extends Challenge<Integer> {
                     continue;
                 int amount = Integer.parseInt(s.substring(0, 1));
                 String childColor = s.substring(2, s.length() - (amount > 1 ? 5 : 4)).trim();
-                Bag child = bags.computeIfAbsent(childColor, Bag::new);
-                bag.children.put(child.getColor(), amount);
+                bag.children.put(childColor, amount);
             }
         });
         return bags;
@@ -48,7 +40,7 @@ public class Day7 extends Challenge<Integer> {
 
     private boolean leadsToGoldBag(Bag bag) {
         Set<String> children = bag.children.keySet();
-        for (String child : children) {
+        for(String child : children) {
             if (leadsToGoldBag(bags.get(child))) {
                 return true;
             }
