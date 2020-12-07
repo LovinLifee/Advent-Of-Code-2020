@@ -3,69 +3,79 @@ package net.avuna.aoc.days;
 import lombok.Value;
 import net.avuna.aoc.Challenge;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class Day7 extends Challenge<Object> {
+public class Day7 extends Challenge<Integer> {
 
-    public Day7() {
-        super(7);
-    }
+    private static final Pattern bagPattern = Pattern.compile("(.+) bags contain (.+)\\.");
+    private static final Pattern partPattern = Pattern.compile("(\\d+?) (.+?) bags?");
 
-    private final Map<String, Set<String>> bags = new HashMap<>();
+    private final Map<String, Bag> bags = parseBags();
 
     @Override
-    public Object doPartOne() {
-        AtomicInteger count = new AtomicInteger();
-        readLines().forEach(s -> {
-            String[] parts = s.split("contain");
-            String currentBag = parts[0].trim();
-            String bagColour = getBagColour(currentBag);
-            Set<String> children = bags.computeIfAbsent(bagColour, bags -> new HashSet<>());
-            String[] childBagData = parts[1].split(",");
-            for(String b : childBagData) {
-                String color = getBagColour(b);
-                children.add(color);
+    public Integer doPartOne() {
+        int count = 0;
+        for(Bag bag : bags.values()) {
+            if (leadsToGoldBag(bag)) {
+                count++;
             }
-            this.bags.put(bagColour, children);
-        });
-        this.bags.forEach((bag, children) -> {
-            if(leadsToGoldBag(bag)) {
-                count.incrementAndGet();
-            }
-        });
+        }
         return count;
     }
 
-    private boolean leadsToGoldBag(String bag) {
-        Set<String> children = this.bags.get(bag);
-        if(children == null) {
-            return false;
-        }
-        for(String child : children) {
-            if(leadsToGoldBag(child)) {
+    @Override
+    public Integer doPartTwo() {
+        int count = 0;
+        Bag b = bags.get("shiny gold");
+        return countChildrenBags(b) - 1;
+    }
+
+    private Map<String, Bag> parseBags() {
+        final Map<String, Bag> bags = new HashMap<>();
+        readLines().forEach(line -> {
+            Matcher bagMatcher = bagPattern.matcher(line);
+            bagMatcher.matches();
+            Bag bag = bags.computeIfAbsent(bagMatcher.group(1), Bag::new);
+            String data = bagMatcher.group(2);
+            if (data.equals("no other bags"))
+                return;
+            String[] split = data.split(", ");
+            for (String part : split) {
+                Matcher partMatcher = partPattern.matcher(part);
+                partMatcher.matches();
+                int num = Integer.parseInt(partMatcher.group(1));
+                Bag child = bags.computeIfAbsent(partMatcher.group(2), Bag::new);
+                bag.children.put(child.getColor(), num);
+            }
+        });
+        return bags;
+    }
+
+    private boolean leadsToGoldBag(Bag bag) {
+        Set<String> children = bag.children.keySet();
+        for (String child : children) {
+            if (leadsToGoldBag(bags.get(child))) {
                 return true;
             }
         }
         return children.contains("shiny gold");
     }
 
-    @Override
-    public Object doPartTwo() {
-        return null;
+    private int countChildrenBags(Bag bag) {
+        int sum = 1;
+        for (Map.Entry<String, Integer> e : bag.getChildren().entrySet()) {
+            sum += e.getValue() * countChildrenBags(bags.get(e.getKey()));
+        }
+        return sum;
     }
 
-    private static int getBagAmount(String bagData) {
-        String amount = bagData.replaceAll("\\D+", "");
-        return Integer.parseInt(amount);
-    }
-
-    private String getBagColour(String bagData) {
-        String bag = bagData;
-        bag = bag.replaceAll("\\d+", "");
-        bag = bag.replaceAll("bags", "");
-        bag = bag.replaceAll("bag", "");
-        bag = bag.replaceAll("\\.+", "");
-        return bag.trim();
+    @Value
+    private static class Bag {
+        String color;
+        Map<String, Integer> children = new HashMap<>();
     }
 }

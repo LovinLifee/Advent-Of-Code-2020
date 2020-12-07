@@ -1,3 +1,5 @@
+package ca.avuna.aoc;
+
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
@@ -6,4 +8,9 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.AverageTime)
 public class Benchmarks {
 
+
+    @Benchmark
+    public void doTests() {
+
+    }
 }

@@ -10,10 +10,6 @@ public class Day1 extends Challenge<Integer> {
 
     private final List<Integer> numbers = readLines().map(Integer::parseInt).collect(Collectors.toList());
 
-    public Day1() {
-        super(1);
-    }
-
     @Override
     public Integer doPartOne() {
         for(int a : numbers) {

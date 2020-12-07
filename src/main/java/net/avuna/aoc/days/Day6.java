@@ -21,10 +21,6 @@ public class Day6 extends Challenge<Integer> {
 
     private final List<String> lines = readLines().collect(Collectors.toList());
 
-    public Day6() {
-        super(6);
-    }
-
     @Override
     public Integer doPartOne() {
         Set<Character> characters = new HashSet<>();

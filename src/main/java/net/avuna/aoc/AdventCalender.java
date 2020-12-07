@@ -20,7 +20,7 @@ public class AdventCalender {
     }
 
     private static void runDay(Challenge<?> challenge) {
-        System.out.printf("----------------- DAY %d -----------------\n", challenge.getDay());
+        System.out.printf("----------------- %s -----------------\n", challenge.getClass().getSimpleName());
         System.out.printf("Output of part 1: %s\n", Objects.toString(challenge.doPartOne()));
         System.out.printf("Output of part 2: %s\n", Objects.toString(challenge.doPartTwo()));
     }

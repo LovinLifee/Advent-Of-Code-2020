@@ -11,10 +11,6 @@ public class Day5 extends Challenge<Integer> {
 
     private final List<Seat> seats = parseSeats();
 
-    public Day5() {
-        super(5);
-    }
-
     private List<Seat> parseSeats() {
         return readLines().map(s -> {
             String row = s.substring(0, 7);

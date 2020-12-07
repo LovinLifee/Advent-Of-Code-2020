@@ -12,10 +12,6 @@ public class Day2 extends Challenge<Long> {
 
     private final List<Data> data = parseData().collect(Collectors.toList());
 
-    public Day2() {
-        super(2);
-    }
-
     @Override
     public Long doPartOne() {
         return data.stream().filter(this::isValidPart1).count();

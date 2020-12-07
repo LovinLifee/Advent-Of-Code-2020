@@ -13,16 +13,11 @@ import java.util.stream.Stream;
 @Getter
 public abstract class Challenge<T> {
 
-    private final int day;
-
-    public Challenge(int day) {
-        this.day = day;
-    }
-
     public abstract T doPartOne();
     public abstract T doPartTwo();
 
     protected Stream<String> readLines() {
+        int day = Integer.parseInt(getClass().getSimpleName().substring(3));
         String resourceName = String.format("day-%d-input.txt", day);
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceName)));

@@ -11,10 +11,6 @@ import java.util.stream.Collectors;
 
 public class Day4 extends Challenge<Long> {
 
-    public Day4() {
-        super(4);
-    }
-
     @Override
     public Long doPartOne() {
         return parsePassports().stream().filter(Passport::isValid).count();

@@ -12,10 +12,6 @@ public class Day3 extends Challenge<Long> {
 
     private final Map map = new Map(readAsMatrix());
 
-    public Day3() {
-        super(3);
-    }
-
     @Override
     public Long doPartOne() {
         return countTreesOnSlope(map, 3, 1);
