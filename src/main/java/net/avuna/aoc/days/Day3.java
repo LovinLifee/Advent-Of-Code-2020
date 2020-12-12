@@ -42,11 +42,11 @@ public class Day3 extends Challenge<Long> {
 
     private static final class Map {
 
-        private final char[][] matrix;
+        private final Character[][] matrix;
         private final int WIDTH;
         private final int HEIGHT;
 
-        public Map(char[][] matrix) {
+        public Map(Character[][] matrix) {
             this.matrix = matrix;
             this.WIDTH = matrix.length;
             this.HEIGHT = matrix[0].length;

@@ -32,7 +32,7 @@ public class Day7 extends Challenge<Object> {
                     continue;
                 int amount = Integer.parseInt(s.substring(0, 1));
                 String childColor = s.substring(2, s.length() - (amount > 1 ? 5 : 4)).trim();
-                bag.children.put(childColor, amount);
+                bag.getChildren().put(childColor, amount);
             }
         });
         return bags;

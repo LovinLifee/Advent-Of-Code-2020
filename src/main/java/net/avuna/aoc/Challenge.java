@@ -34,12 +34,12 @@ public abstract class Challenge<T> {
         });
     }
 
-    protected char[][] readAsMatrix() {
+    protected Character[][] readAsMatrix() {
         List<String> input = readLines().collect(Collectors.toList());
-        char[][] matrix = new char[input.get(0).length()][input.size()];
-        for (int x = 0; x < input.size(); x++) {
-            for (int y = 0; y < input.get(x).length(); y++) {
-                matrix[y][x] = input.get(x).charAt(y);
+        Character[][] matrix = new Character[input.get(0).length()][input.size()];
+        for (int y = 0; y < input.size(); y++) {
+            for (int x = 0; x < input.get(y).length(); x++) {
+                matrix[x][y] = input.get(y).charAt(x);
             }
         }
         return matrix;
