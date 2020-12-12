@@ -3,8 +3,6 @@ package net.avuna.aoc.days;
 import net.avuna.aoc.Challenge;
 import net.avuna.aoc.Matrix2D;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Day11 extends Challenge<Object> {
@@ -13,22 +11,22 @@ public class Day11 extends Challenge<Object> {
 
     @Override
     public Object doPartOne() {
-        Set<Matrix2D<Character>> seen = new HashSet<>();
-        while(!seen.contains(matrix)) {
-            seen.add(matrix);
+        Matrix2D<Character> lastSeen = Matrix2D.empty();
+        while(!lastSeen.equals(matrix)) {
+            lastSeen = matrix;
             doStep();
         }
         AtomicLong occupiedSeats = new AtomicLong();
         matrix.forEach((x, y, c) -> {
-            occupiedSeats.getAndIncrement();
+            if(c == '#') {
+                occupiedSeats.getAndIncrement();
+            }
         });
         return occupiedSeats;
     }
 
     public void doStep() {
         Matrix2D<Character> temp = new Matrix2D<>(matrix.getWidth(), matrix.getHeight());
-        System.out.println(matrix.getWidth());
-        System.out.println(matrix.getHeight());
         matrix.forEach((x, y, c) -> {
             long occupiedAdjacentSeats = matrix.getAdjacentElements(x, y).stream().filter(s -> s == '#').count();
             char toSet = c;

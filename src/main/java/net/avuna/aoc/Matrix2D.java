@@ -17,7 +17,7 @@ public class Matrix2D<T> implements Cloneable {
     public Matrix2D(int width, int height) {
         this.width = width;
         this.height = height;
-        this.matrix = (T[][]) new Object[width][height];
+        this.matrix = (T[][]) new Object[height][width];
     }
     public Matrix2D(T[][] matrix) {
         this.matrix = matrix;
@@ -25,6 +25,9 @@ public class Matrix2D<T> implements Cloneable {
         this.height = matrix.length;
     }
 
+    public static Matrix2D empty() {
+        return new Matrix2D(0, 0);
+    }
 
     @Override
     public Matrix2D<T> clone() {
@@ -83,7 +86,7 @@ public class Matrix2D<T> implements Cloneable {
             for(int dy = -1; dy <= 1; ++dy) {
                 if (dx != 0 || dy != 0) {
                     try {
-                        result.add(this.matrix[x + dx][y + dy]);
+                        result.add(this.matrix[y + dy][x + dx]);
                     } catch(IndexOutOfBoundsException e) {
 
                     }

@@ -5,9 +5,11 @@ import net.avuna.aoc.days.Day3;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Getter
@@ -36,13 +38,19 @@ public abstract class Challenge<T> {
 
     protected Character[][] readAsMatrix() {
         List<String> input = readLines().collect(Collectors.toList());
-        Character[][] matrix = new Character[input.get(0).length()][input.size()];
-        for (int y = 0; y < input.size(); y++) {
-            for (int x = 0; x < input.get(y).length(); x++) {
-                matrix[x][y] = input.get(y).charAt(x);
-            }
+        Character[][] matrix = new Character[input.size()][];
+        for (int i = 0; i < input.size(); i++) {
+            matrix[i] = box(input.get(i).toCharArray());
         }
         return matrix;
+    }
+
+    private Character[] box(char[] chars) {
+        Character[] arr = new Character[chars.length];
+        for(int i = 0; i < arr.length; i++) {
+            arr[i] = chars[i];
+        }
+        return arr;
     }
 
     protected String[] readAsCSV() {
