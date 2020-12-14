@@ -5,6 +5,8 @@ import net.avuna.aoc.Challenge;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+//HECK this challenge.
 public class Day10 extends Challenge<Object> {
 
     private List<Integer> voltageAdapters = readLines().map(Integer::parseInt).collect(Collectors.toList());

@@ -1,7 +1,7 @@
 package net.avuna.aoc.days;
 
 import net.avuna.aoc.Challenge;
-import net.avuna.aoc.Matrix2D;
+import net.avuna.aoc.util.Matrix2D;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -40,16 +40,8 @@ public class Day11 extends Challenge<Object> {
         this.matrix = temp;
     }
 
-    private void printMatrix() {
-        matrix.forEach((x, y, c) -> {
-            System.out.print(c);
-        }, () -> {
-            System.out.println();
-        });
-    }
-
     @Override
     public Object doPartTwo() {
-        return null;
+        return 1;
     }
 }

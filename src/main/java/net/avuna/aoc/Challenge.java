@@ -40,17 +40,9 @@ public abstract class Challenge<T> {
         List<String> input = readLines().collect(Collectors.toList());
         Character[][] matrix = new Character[input.size()][];
         for (int i = 0; i < input.size(); i++) {
-            matrix[i] = box(input.get(i).toCharArray());
+            matrix[i] = input.get(i).chars().mapToObj(c -> (char) c).toArray(Character[]::new);
         }
         return matrix;
-    }
-
-    private Character[] box(char[] chars) {
-        Character[] arr = new Character[chars.length];
-        for(int i = 0; i < arr.length; i++) {
-            arr[i] = chars[i];
-        }
-        return arr;
     }
 
     protected String[] readAsCSV() {

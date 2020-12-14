@@ -1,14 +1,18 @@
-package net.avuna.aoc;
+package net.avuna.aoc.util;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 @Getter
-public class Matrix2D<T> implements Cloneable {
+public class Matrix2D<T> {
 
     private final int width;
     private final int height;
@@ -29,11 +33,6 @@ public class Matrix2D<T> implements Cloneable {
         return new Matrix2D(0, 0);
     }
 
-    @Override
-    public Matrix2D<T> clone() {
-        return new Matrix2D<T>(copy2D(matrix));
-    }
-
     public void forEach(MatrixCoordinateConsumer<T> consumer, Runnable onRowEnd) {
         for(int y = 0; y < matrix.length; y++) {
             for(int x = 0; x < matrix[y].length; x++) {
@@ -51,6 +50,10 @@ public class Matrix2D<T> implements Cloneable {
     public T get(int x, int y) {
         return matrix[y][x];
     }
+    public T get(Coordinate coordinate) {
+        return get(coordinate.getX(), coordinate.getY());
+    }
+
 
     public void forEach(MatrixCoordinateConsumer<T> consumer) {
         forEach(consumer, () -> {});
@@ -61,7 +64,7 @@ public class Matrix2D<T> implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Matrix2D<?> matrix2D = (Matrix2D<?>) o;
-        return getWidth() == matrix2D.getWidth() && getHeight() == matrix2D.getHeight() && Arrays.deepEquals(getMatrix(), matrix2D.getMatrix());
+        return Arrays.deepEquals(getMatrix(), matrix2D.getMatrix());
     }
 
     @Override
@@ -71,33 +74,49 @@ public class Matrix2D<T> implements Cloneable {
         return result;
     }
 
-    private static final <T> T[][] copy2D(T[][] source) {
-        T[][] destination = (T[][]) new Object[source.length][];
-        for (int i = 0; i < source.length; ++i) {
-            destination[i] = (T[]) new Object[source[i].length];
-            System.arraycopy(source[i], 0, destination[i], 0, destination[i].length);
-        }
-        return destination;
+    public boolean isInBounds(Coordinate coordinate) {
+        return isInBounds(coordinate.getX(), coordinate.getY());
+    }
+
+    public boolean isInBounds(int x, int y) {
+        return x >= 0 && x < width && y >= 0 && y < height;
     }
 
     public List<T> getAdjacentElements(int x, int y) {
         List<T> result = new ArrayList<>(8);
-        for (int dx = -1; dx <= 1; ++dx) {
-            for(int dy = -1; dy <= 1; ++dy) {
-                if (dx != 0 || dy != 0) {
-                    try {
-                        result.add(this.matrix[y + dy][x + dx]);
-                    } catch(IndexOutOfBoundsException e) {
-
-                    }
-                }
+        for(Direction direction : Direction.values()) {
+            Coordinate position = new Coordinate(x, y);
+            position.move(direction);
+            if(isInBounds(position)) {
+                result.add(matrix[position.getY()][position.getX()]);
             }
         }
         return result;
     }
 
+    public T castRayUntil(int startingX, int startingY, Direction direction, Predicate<IndicieContainer> until) {
+        IndicieContainer placeHolder = new IndicieContainer(matrix[startingY][startingX], new Coordinate(startingX, startingY));
+        while(!until.test(placeHolder)) {
+            placeHolder.setValue(matrix[placeHolder.getCoordinate().getY()][placeHolder.getCoordinate().getX()]);
+            placeHolder.getCoordinate().move(direction);
+        }
+        return placeHolder.getValue();
+    }
+
+
     @FunctionalInterface
-    public static interface MatrixCoordinateConsumer<T> {
+    public interface MatrixCoordinateConsumer<T> {
         void accept(int x, int y, T t);
+    }
+
+    @ToString
+    @Getter
+    @AllArgsConstructor
+    public class IndicieContainer {
+
+        @Setter
+        private T value;
+        private Coordinate coordinate;
+
     }
 }

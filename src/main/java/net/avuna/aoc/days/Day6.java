@@ -1,12 +1,12 @@
 package net.avuna.aoc.days;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.avuna.aoc.Challenge;
+import net.avuna.aoc.util.FrequencyMap;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 /**
@@ -48,7 +48,7 @@ public class Day6 extends Challenge<Integer> {
         for(int i = 0; i < lines.size(); i++) {
             String s = lines.get(i);
             if(s.isBlank()) {
-                for(AtomicInteger num : occurrences.backingMap.values()) {
+                for(AtomicInteger num : occurrences.getBackingMap().values()) {
                     if(num.get() == groupSize) {
                         sum++;
                     }
@@ -63,66 +63,5 @@ public class Day6 extends Challenge<Integer> {
             }
         }
         return sum;
-    }
-
-    /*
-        Who knew copying and pasting from your previous projects would be useful?
-     */
-    private static class FrequencyMap<T> {
-
-        private final Map<T, AtomicInteger> backingMap = new HashMap<>();
-
-        public void clear() {
-            backingMap.clear();
-        }
-
-        public int increment(T key) {
-            AtomicInteger count = backingMap.computeIfAbsent(key, k -> new AtomicInteger());
-            return count.incrementAndGet();
-        }
-
-        public int getCount(T key) {
-            return backingMap.get(key).get();
-        }
-
-        public int getTotalCount() {
-            return backingMap.entrySet().stream().mapToInt(e -> e.getValue().get()).sum();
-        }
-
-        public Tuple<T, Integer> getMin() {
-            Map.Entry<T, AtomicInteger> entry = backingMap.entrySet().stream().min(Comparator.comparingInt(o -> o.getValue().get())).orElseThrow(NoSuchElementException::new);
-            return Tuple.of(entry.getKey(), entry.getValue().get());
-        }
-
-        public Tuple<T, Integer> getMax() {
-            Map.Entry<T, AtomicInteger> entry = backingMap.entrySet().stream().max(Comparator.comparingInt(o -> o.getValue().get())).orElseThrow(NoSuchElementException::new);
-            return Tuple.of(entry.getKey(), entry.getValue().get());
-        }
-
-        public double getAverageCount() {
-            return backingMap.entrySet().stream().mapToInt(e -> e.getValue().get()).average().orElseThrow(NoSuchElementException::new);
-        }
-
-        public void forEach(BiConsumer<T, Integer> action) {
-            backingMap.entrySet().iterator().forEachRemaining(e -> action.accept(e.getKey(), e.getValue().get()));
-        }
-    }
-
-
-    @Getter
-    @RequiredArgsConstructor
-    private static class Tuple<K, V> implements Map.Entry<K, V> {
-
-        private final K key;
-        private final V value;
-
-        @Override
-        public V setValue(V value) {
-            throw new UnsupportedOperationException("Tuple is immutable");
-        }
-
-        public static <K, V> Tuple<K, V> of(K key, V value) {
-            return new Tuple<>(key, value);
-        }
     }
 }
